@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatedBackground } from "@/components/background/AnimatedBackground";
+import ChatPanel from "@/components/ChatPanel";
 import { FeatureCards } from "@/components/home/FeatureCards";
 import { HeroSection } from "@/components/home/HeroSection";
 import { QuickActions } from "@/components/home/QuickActions";
@@ -28,6 +29,9 @@ export default function Home() {
 
                   {/* Search Input */}
                   <SearchInput />
+
+                  {/* Quick test chat panel */}
+                  <ChatPanel />
 
                   {/* Quick Actions */}
                   <QuickActions />
