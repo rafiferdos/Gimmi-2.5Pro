@@ -8,11 +8,30 @@ export const SearchInput = () => {
 
    return (
       <div className='max-w-2xl mx-auto mt-8'>
-         <div
-            className='frosted frosted-input shadow-lg'
-            role='search'
-            aria-label='Ask the assistant'
-         >
+         <div className='frosted p-6 shadow-lg' role='search' aria-label='Ask the assistant'>
+            <div className='mb-4'>
+               <h2 className='text-2xl font-semibold'>Hello, Gimmi 👋</h2>
+               <p className='mt-1 text-sm text-foreground/70'>Ask anything — I'll help you draft, summarize, or brainstorm.</p>
+            </div>
+
+            <div className='mb-4 flex flex-wrap gap-2'>
+               {[
+                  'Summarize my notes',
+                  'Write an email',
+                  'Generate ideas for product names',
+               ].map((t) => (
+                  <button
+                     key={t}
+                     type='button'
+                     onClick={() => setValue(t)}
+                     className='chip'
+                  >
+                     {t}
+                  </button>
+               ))}
+            </div>
+
+            <div className='frosted-input items-center'>
             <input
                aria-label='Ask me anything'
                value={value}
@@ -46,26 +65,23 @@ export const SearchInput = () => {
                </svg>
             </div>
 
-            {value ?
-               <Button
-                  onClick={() => setValue("")}
-                  variant='flat'
-                  size='sm'
-                  className='clear-btn'
-               >
+            {value ? (
+               <Button onClick={() => setValue("")} variant='flat' size='sm' className='clear-btn submit-btn'>
                   Clear
                </Button>
-            :  <Button
+            ) : (
+               <Button
                   onClick={() => {
                      /* submit action: integrate with search later */
                   }}
                   variant='flat'
                   size='sm'
-                  className='min-w-8 w-8 h-8'
+                  className='submit-btn'
                >
                   ➤
                </Button>
-            }
+            )}
+            </div>
          </div>
       </div>
    );
