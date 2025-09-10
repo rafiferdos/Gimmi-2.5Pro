@@ -12,8 +12,8 @@ export default function Home() {
          {/* Animated Background */}
          <AnimatedBackground />
 
-         {/* Gradient Overlay */}
-         <div className='fixed inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/80 backdrop-blur-[1px]' />
+         {/* Gradient Overlay - Much lighter to show balls */}
+         <div className='fixed inset-0 bg-gradient-to-br from-background/30 via-background/20 to-background/30' />
 
          {/* Content */}
          <div className='relative z-10'>

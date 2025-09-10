@@ -4,17 +4,17 @@
 
 /* Frosted Glass Effect */
 .frosted {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+   backdrop-filter: blur(12px);
+   -webkit-backdrop-filter: blur(12px);
+   background: rgba(255, 255, 255, 0.08);
+   border: 1px solid rgba(255, 255, 255, 0.12);
+   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
 .frosted-dark {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+   backdrop-filter: blur(12px);
+   -webkit-backdrop-filter: blur(12px);
+   background: rgba(0, 0, 0, 0.15);
+   border: 1px solid rgba(255, 255, 255, 0.08);
+   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
 }

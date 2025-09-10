@@ -20,7 +20,7 @@ export const AnimatedBackground = () => {
    useEffect(() => {
       const colors = [
          "rgba(255, 99, 132, 0.8)", // Pink - much more visible
-         "rgba(54, 162, 235, 0.8)", // Blue - much more visible 
+         "rgba(54, 162, 235, 0.8)", // Blue - much more visible
          "rgba(255, 206, 86, 0.8)", // Yellow - much more visible
          "rgba(75, 192, 192, 0.8)", // Teal - much more visible
          "rgba(153, 102, 255, 0.8)", // Purple - much more visible
@@ -57,7 +57,7 @@ export const AnimatedBackground = () => {
                } else if (newX >= window.innerWidth + ball.size * 0.5) {
                   newX = -ball.size * 0.5;
                }
-               
+
                if (newY <= -ball.size * 0.5) {
                   newY = window.innerHeight + ball.size * 0.5;
                } else if (newY >= window.innerHeight + ball.size * 0.5) {
@@ -73,7 +73,7 @@ export const AnimatedBackground = () => {
                };
             })
          );
-         
+
          animationFrame = requestAnimationFrame(animateBalls);
       };
 
