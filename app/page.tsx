@@ -5,7 +5,7 @@ import { FeatureCards } from "@/components/home/FeatureCards";
 import { HeroSection } from "@/components/home/HeroSection";
 import { QuickActions } from "@/components/home/QuickActions";
 import { SearchInput } from "@/components/home/SearchInput";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/Navbar";
 
 export default function Home() {
    return (
