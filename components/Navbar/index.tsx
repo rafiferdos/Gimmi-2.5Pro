@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Navbar as HeroUINavbar, 
   NavbarContent, 
@@ -24,6 +24,12 @@ import { useTheme } from 'next-themes';
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Avoid hydration mismatch: only render theme-dependent UI after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const menuItems = [
     "Home",
@@ -87,19 +93,24 @@ export const Navbar = () => {
 
       <NavbarContent justify="end">
         <NavbarItem>
-          <Switch
-            size="sm"
-            color="primary"
-            thumbIcon={({ isSelected, className }: { isSelected: boolean; className?: string }) =>
-              isSelected ? (
-                <div className={className}>🌙</div>
-              ) : (
-                <div className={className}>☀️</div>
-              )
-            }
-            isSelected={theme === 'dark'}
-            onValueChange={(isSelected: boolean) => setTheme(isSelected ? 'dark' : 'light')}
-          />
+          {mounted ? (
+            <Switch
+              size="sm"
+              color="primary"
+              thumbIcon={({ isSelected, className }: { isSelected: boolean; className?: string }) =>
+                isSelected ? (
+                  <div className={className}>🌙</div>
+                ) : (
+                  <div className={className}>☀️</div>
+                )
+              }
+              isSelected={theme === 'dark'}
+              onValueChange={(isSelected: boolean) => setTheme(isSelected ? 'dark' : 'light')}
+            />
+          ) : (
+            // placeholder to keep markup stable during SSR
+            <div className="w-10 h-6 rounded-full bg-background/40" aria-hidden />
+          )}
         </NavbarItem>
         <NavbarItem>
           <Dropdown placement="bottom-end">
