@@ -43,7 +43,7 @@ export const Navbar = () => {
       <HeroUINavbar
          isMenuOpen={isMenuOpen}
          onMenuOpenChange={setIsMenuOpen}
-         className='backdrop-blur-md bg-background/70 border-b border-divider/50'
+         className='frosted border-b border-white/10'
          maxWidth='full'
          isBordered
       >
@@ -138,7 +138,7 @@ export const Navbar = () => {
                   <DropdownMenu
                      aria-label='Profile Actions'
                      variant='flat'
-                     className='backdrop-blur-md'
+                     className='frosted'
                   >
                      <DropdownItem key='profile' className='h-14 gap-2'>
                         <p className='font-semibold'>Signed in as</p>
@@ -156,7 +156,7 @@ export const Navbar = () => {
             </NavbarItem>
          </NavbarContent>
 
-         <NavbarMenu className='backdrop-blur-md bg-background/90'>
+         <NavbarMenu className='frosted'>
             {menuItems.map((item, index) => (
                <NavbarMenuItem key={`${item}-${index}`}>
                   <Button

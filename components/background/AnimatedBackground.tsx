@@ -19,28 +19,30 @@ export const AnimatedBackground = () => {
 
    useEffect(() => {
       const colors = [
-         "rgba(139, 69, 19, 0.3)", // Brown
-         "rgba(255, 165, 0, 0.3)", // Orange
-         "rgba(255, 20, 147, 0.3)", // Deep Pink
-         "rgba(0, 191, 255, 0.3)", // Deep Sky Blue
-         "rgba(50, 205, 50, 0.3)", // Lime Green
-         "rgba(138, 43, 226, 0.3)", // Blue Violet
-         "rgba(255, 69, 0, 0.3)", // Red Orange
-         "rgba(0, 206, 209, 0.3)", // Dark Turquoise
+         "rgba(255, 99, 132, 0.4)", // Pink
+         "rgba(54, 162, 235, 0.4)", // Blue  
+         "rgba(255, 206, 86, 0.4)", // Yellow
+         "rgba(75, 192, 192, 0.4)", // Teal
+         "rgba(153, 102, 255, 0.4)", // Purple
+         "rgba(255, 159, 64, 0.4)", // Orange
+         "rgba(199, 199, 199, 0.3)", // Gray
+         "rgba(83, 102, 255, 0.4)", // Indigo
       ];
 
       const initialBalls = Array.from({ length: 15 }, (_, i) => ({
          id: i,
          x: Math.random() * window.innerWidth,
          y: Math.random() * window.innerHeight,
-         size: Math.random() * 200 + 50,
+         size: Math.random() * 250 + 80,
          color: colors[Math.floor(Math.random() * colors.length)],
-         speedX: (Math.random() - 0.5) * 0.5,
-         speedY: (Math.random() - 0.5) * 0.5,
-         opacity: Math.random() * 0.4 + 0.1,
+         speedX: (Math.random() - 0.5) * 0.3,
+         speedY: (Math.random() - 0.5) * 0.3,
+         opacity: Math.random() * 0.4 + 0.2,
       }));
 
       setBalls(initialBalls);
+
+      let animationFrame: number;
 
       const animateBalls = () => {
          setBalls((prevBalls) =>
@@ -50,19 +52,16 @@ export const AnimatedBackground = () => {
                let newSpeedX = ball.speedX;
                let newSpeedY = ball.speedY;
 
-               if (newX <= 0 || newX >= window.innerWidth - ball.size) {
-                  newSpeedX = -ball.speedX;
-                  newX = Math.max(
-                     0,
-                     Math.min(newX, window.innerWidth - ball.size)
-                  );
+               if (newX <= -ball.size * 0.5) {
+                  newX = window.innerWidth + ball.size * 0.5;
+               } else if (newX >= window.innerWidth + ball.size * 0.5) {
+                  newX = -ball.size * 0.5;
                }
-               if (newY <= 0 || newY >= window.innerHeight - ball.size) {
-                  newSpeedY = -ball.speedY;
-                  newY = Math.max(
-                     0,
-                     Math.min(newY, window.innerHeight - ball.size)
-                  );
+               
+               if (newY <= -ball.size * 0.5) {
+                  newY = window.innerHeight + ball.size * 0.5;
+               } else if (newY >= window.innerHeight + ball.size * 0.5) {
+                  newY = -ball.size * 0.5;
                }
 
                return {
@@ -74,10 +73,12 @@ export const AnimatedBackground = () => {
                };
             })
          );
+         
+         animationFrame = requestAnimationFrame(animateBalls);
       };
 
-      const interval = setInterval(animateBalls, 16);
-      return () => clearInterval(interval);
+      animationFrame = requestAnimationFrame(animateBalls);
+      return () => cancelAnimationFrame(animationFrame);
    }, []);
 
    return (
@@ -85,16 +86,6 @@ export const AnimatedBackground = () => {
          {balls.map((ball) => (
             <AnimatedBall key={ball.id} ball={ball} />
          ))}
-         <style jsx>{`
-            @keyframes float {
-               0% {
-                  transform: translateY(0px) scale(1);
-               }
-               100% {
-                  transform: translateY(-20px) scale(1.05);
-               }
-            }
-         `}</style>
       </div>
    );
 };

@@ -9,7 +9,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
    return (
       <Card
-         className='backdrop-blur-md bg-content1/50 border border-divider/30 hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20'
+         className='frosted hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20'
          isPressable
       >
          <CardBody className='text-center p-6'>

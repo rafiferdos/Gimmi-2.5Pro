@@ -7,10 +7,10 @@ export const SearchInput = () => {
          <Input
             size='lg'
             placeholder='Ask me anything...'
-            className='backdrop-blur-md'
+            className='frosted'
             classNames={{
                inputWrapper:
-                  "backdrop-blur-md bg-content1/70 border border-divider/50 hover:border-primary/50 group-data-[focus=true]:border-primary shadow-lg",
+                  "frosted hover:border-primary/50 group-data-[focus=true]:border-primary shadow-lg",
                input: "text-foreground placeholder:text-foreground/50",
             }}
             endContent={

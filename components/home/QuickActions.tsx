@@ -15,7 +15,7 @@ export const QuickActions = () => {
             <Chip
                key={index}
                variant='flat'
-               className='backdrop-blur-md bg-content2/60 hover:bg-primary/20 cursor-pointer transition-all duration-200 hover:scale-105'
+               className='frosted hover:bg-primary/20 cursor-pointer transition-all duration-200 hover:scale-105'
                onClick={() => {
                   /* Handle quick action */
                }}
