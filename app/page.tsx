@@ -19,7 +19,7 @@ export default function Home() {
          <div className='relative z-10'>
             {/* Main Content */}
             <div className='flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-6'>
-               <div className='max-w-4xl mx-auto text-center space-y-8'>
+               <div className='max-w-4xl mx-auto text-center space-y-8 frosted rounded-3xl p-8 backdrop-blur-md'>
                   {/* Hero Section */}
                   <HeroSection />
 
