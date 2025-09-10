@@ -1,73 +1,173 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { Card, CardBody } from "@heroui/card";
+import { Input } from "@heroui/input";
+import { Button } from "@heroui/button";
+import { ScrollShadow } from "@heroui/scroll-shadow";
+import { Spinner } from "@heroui/spinner";
+import { Chip } from "@heroui/chip";
+
+interface ChatMessage {
+   role: "user" | "assistant" | "system";
+   text: string;
+   id: string;
+}
 
 export default function ChatPanel() {
-   const [messages, setMessages] = useState<{ role: string; text: string }[]>(
-      []
-   );
+   const [messages, setMessages] = useState<ChatMessage[]>([]);
    const [input, setInput] = useState("");
    const [loading, setLoading] = useState(false);
+   const listRef = useRef<HTMLDivElement | null>(null);
+
+   const scrollToBottom = useCallback(() => {
+      requestAnimationFrame(() => {
+         if (listRef.current) {
+            listRef.current.scrollTop = listRef.current.scrollHeight;
+         }
+      });
+   }, []);
 
    async function send() {
-      if (!input.trim()) return;
+      if (!input.trim() || loading) return;
       const userText = input.trim();
-      setMessages((m) => [...m, { role: "user", text: userText }]);
+      const userMsg: ChatMessage = {
+         role: "user",
+         text: userText,
+         id: crypto.randomUUID(),
+      };
+      setMessages((m) => [...m, userMsg]);
       setInput("");
       setLoading(true);
+      scrollToBottom();
 
       try {
          const res = await fetch("/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ prompt: userText }),
+            body: JSON.stringify({ messages: messages.concat(userMsg) }),
          });
-
-         const text = await res.text();
-         setMessages((m) => [...m, { role: "assistant", text }]);
+         let data: any = null;
+         try {
+            data = await res.json();
+         } catch {
+            // fallback to text if not json
+            const fallbackText = await res.text();
+            data = { text: fallbackText };
+         }
+         const text: string = data?.text || data?.output || JSON.stringify(data);
+         setMessages((m) => [
+            ...m,
+            {
+               role: "assistant",
+               text: text,
+               id: crypto.randomUUID(),
+            },
+         ]);
       } catch (err: any) {
          setMessages((m) => [
             ...m,
             {
                role: "assistant",
-               text: `Error: ${err?.message || String(err)}`,
+               text: `⚠️ Error: ${err?.message || String(err)}`,
+               id: crypto.randomUUID(),
             },
          ]);
       } finally {
          setLoading(false);
+         scrollToBottom();
       }
    }
 
-   return (
-      <div className='max-w-2xl mx-auto mt-6'>
-         <div className='space-y-3'>
-            {messages.map((m, i) => (
-               <div
-                  key={i}
-                  className={m.role === "user" ? "text-right" : "text-left"}
-               >
-                  <div
-                     className={`inline-block px-3 py-2 rounded-md ${m.role === "user" ? "bg-primary/20" : "bg-white/6"}`}
-                  >
-                     <pre className='whitespace-pre-wrap'>{m.text}</pre>
-                  </div>
-               </div>
-            ))}
-         </div>
+   const quickPrompts = [
+      "Summarize this paragraph",
+      "Brainstorm startup ideas",
+      "Explain quantum tunneling",
+      "Create a study plan",
+   ];
 
-         <div className='mt-4 flex gap-2'>
-            <input
-               className='flex-1 rounded-md p-2'
-               value={input}
-               onChange={(e) => setInput(e.target.value)}
-            />
-            <button
-               disabled={loading}
-               onClick={send}
-               className='px-4 py-2 rounded-md bg-primary text-white'
-            >
-               {loading ? "Sending..." : "Send"}
-            </button>
+   return (
+      <Card className='neon-panel mt-12 border-none shadow-none'>
+         <CardBody className='p-0'>
+            <div className='flex flex-col h-[480px]'>
+               <div className='px-5 pt-4 pb-2 flex flex-wrap gap-2'>
+                  {quickPrompts.map((p) => (
+                     <Chip
+                        key={p}
+                        size='sm'
+                        variant='flat'
+                        className='cursor-pointer chip-neon'
+                        onClick={() => setInput(p)}
+                     >
+                        {p}
+                     </Chip>
+                  ))}
+               </div>
+               <ScrollShadow size={40} hideScrollBar className='flex-1 px-5'>
+                  <div ref={listRef} className='space-y-4 py-2 overflow-y-auto h-full pr-1 custom-scroll'>
+                     {messages.length === 0 && (
+                        <div className='text-center mt-12 opacity-60 text-sm tracking-wide animate-fade-in'>
+                           Start the conversation ✨
+                        </div>
+                     )}
+                     {messages.map((m) => (
+                        <MessageBubble key={m.id} message={m} />
+                     ))}
+                     {loading && (
+                        <div className='flex items-center gap-2 text-xs text-primary/80 animate-pulse'>
+                           <Spinner size='sm' color='primary' /> Generating...
+                        </div>
+                     )}
+                  </div>
+               </ScrollShadow>
+               <div className='p-4 border-t border-white/5 neon-divider'>
+                  <form
+                     onSubmit={(e) => {
+                        e.preventDefault();
+                        send();
+                     }}
+                     className='flex gap-2 items-end'
+                  >
+                     <Input
+                        aria-label='Chat input'
+                        variant='flat'
+                        className='flex-1 neon-input'
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder='Type a message...'
+                        onKeyDown={(e) => {
+                           if (e.key === "Enter" && !e.shiftKey) {
+                              e.preventDefault();
+                              send();
+                           }
+                        }}
+                     />
+                     <Button
+                        isDisabled={loading || !input.trim()}
+                        color='primary'
+                        variant='faded'
+                        radius='sm'
+                        className='send-btn-neon'
+                        onPress={send}
+                     >
+                        {loading ? "..." : "Send"}
+                     </Button>
+                  </form>
+               </div>
+            </div>
+         </CardBody>
+      </Card>
+   );
+}
+
+function MessageBubble({ message }: { message: ChatMessage }) {
+   const isUser = message.role === "user";
+   return (
+      <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
+         <div
+            className={`message-bubble ${isUser ? "bubble-user" : "bubble-assistant"} animate-message-in`}
+         >
+            {isUser ? "🧑‍💻" : "🤖"} <span>{message.text}</span>
          </div>
       </div>
    );
