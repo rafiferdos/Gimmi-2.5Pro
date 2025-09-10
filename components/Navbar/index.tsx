@@ -40,10 +40,10 @@ export const Navbar = () => {
    ];
 
    return (
-      <HeroUINavbar
+   <HeroUINavbar
          isMenuOpen={isMenuOpen}
          onMenuOpenChange={setIsMenuOpen}
-         className='frosted border-b border-white/10'
+      className='navbar-neon border-b border-white/10'
          maxWidth='full'
          isBordered
       >
@@ -138,7 +138,7 @@ export const Navbar = () => {
                   <DropdownMenu
                      aria-label='Profile Actions'
                      variant='flat'
-                     className='frosted'
+                     className='dropdown-neon'
                   >
                      <DropdownItem key='profile' className='h-14 gap-2'>
                         <p className='font-semibold'>Signed in as</p>
@@ -156,7 +156,7 @@ export const Navbar = () => {
             </NavbarItem>
          </NavbarContent>
 
-         <NavbarMenu className='frosted'>
+         <NavbarMenu className='menu-neon'>
             {menuItems.map((item, index) => (
                <NavbarMenuItem key={`${item}-${index}`}>
                   <Button
