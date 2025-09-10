@@ -10,19 +10,31 @@ interface AnimatedBallProps {
 }
 
 export const AnimatedBall = ({ ball }: AnimatedBallProps) => {
+   // Derive a soft glow color from the ball color if it's in rgba(...) form.
+   const glowColor = (() => {
+      const m = ball.color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);
+      if (m) {
+         const [, r, g, b] = m;
+         return `rgba(${r}, ${g}, ${b}, 0.22)`;
+      }
+      // fallback to the provided color
+      return ball.color;
+   })();
+
    return (
       <div
-         className='absolute rounded-full'
+         className="absolute rounded-full"
          style={{
             left: ball.x,
             top: ball.y,
             width: ball.size,
             height: ball.size,
-            background: `radial-gradient(circle at 30% 30%, ${ball.color}, rgba(255,255,255,0.3) 30%, ${ball.color.replace(/[\d\.]+\)$/g, "0.4)")} 70%, transparent 85%)`,
+            backgroundColor: ball.color,
             opacity: ball.opacity,
             transform: "translateZ(0)",
             willChange: "transform",
-            boxShadow: `0 0 ${ball.size / 4}px ${ball.color.replace(/[\d\.]+\)$/g, "0.6)")}`, // Add glow effect
+            boxShadow: `0 10px ${Math.max(8, ball.size / 12)}px ${glowColor}`,
+            pointerEvents: "none",
          }}
       />
    );
