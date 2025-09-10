@@ -31,22 +31,59 @@ export async function POST(req: Request) {
 
    try {
       // Build provider-specific payload for Google Generative Language / Gemini
-      const providerBody = {
-         // Many provider endpoints accept prompts as "prompt" or "input". For Google's newer API, it's often:
-         // { "instances": [{"content": "..."}] } or a generate request; we'll attempt a reasonable shape.
-         // We'll include the simple text in a common field and let the provider reject if incorrect.
-         input: body.prompt || "",
-         // optional: other generation params
-         maxOutputTokens: 512,
-         temperature: 0.7,
+      // Use the `prompt.text` shape which is commonly accepted by Google's generate endpoints.
+      // Build provider-specific payload for Google Generative Language / Gemini generateContent endpoint
+      // Endpoint: POST https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key=API_KEY
+      // Required shape: { contents: [ { role: "user", parts: [{ text: "..." }] } ], generationConfig: { ... } }
+      const generationConfig = {
+         maxOutputTokens:
+            typeof (body as any).maxOutputTokens === "number"
+               ? (body as any).maxOutputTokens
+               : 512,
+         temperature:
+            typeof (body as any).temperature === "number"
+               ? (body as any).temperature
+               : 0.7,
+      };
+      const providerBody: Record<string, any> = {
+         contents: [
+            {
+               role: "user",
+               parts: [
+                  {
+                     text: body.prompt || "",
+                  },
+               ],
+            },
+         ],
+         generationConfig,
       };
 
-      const res = await fetch(apiUrl, {
+      // For Google Generative Language endpoints, API keys are passed as a query param (key=...) while
+      // OAuth2 access tokens are sent in the Authorization header. Detect common cases and prefer
+      // using the API key as a query parameter when the hostname matches generativelanguage.googleapis.com
+      let fetchUrl = apiUrl;
+      const urlObj = new URL(apiUrl);
+      const isGoogleGen = urlObj.hostname.includes(
+         "generativelanguage.googleapis.com"
+      );
+
+      const headers: Record<string, string> = {
+         "Content-Type": "application/json",
+      };
+
+      if (isGoogleGen && apiKey && apiKey.startsWith("AIza")) {
+         // API keys for Google services often start with 'AIza'. Append as query param.
+         urlObj.searchParams.set("key", apiKey);
+         fetchUrl = urlObj.toString();
+      } else if (apiKey) {
+         // fallback: assume apiKey is an OAuth2 Bearer token
+         headers["Authorization"] = `Bearer ${apiKey}`;
+      }
+
+      const res = await fetch(fetchUrl, {
          method: "POST",
-         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
-         },
+         headers,
          body: JSON.stringify(providerBody),
       });
 
@@ -56,19 +93,44 @@ export async function POST(req: Request) {
       // Try to parse JSON and extract common fields
       if (contentType.includes("application/json")) {
          const json = JSON.parse(text);
+         // If upstream returned UNAUTHENTICATED or 401, include a helpful message for developers
+         if (res.status === 401 || res.status === 403) {
+            return NextResponse.json(
+               {
+                  error: json,
+                  hint: "Authentication failed. For Google endpoints, either provide a valid OAuth2 access token in GEMINI_API_KEY or a restricted API key (preferably passed via .env.local). If you posted a key publicly, rotate/revoke it immediately.",
+               },
+               { status: res.status }
+            );
+         }
          // Google responses can be in different shapes; try common paths.
-         const possibleText =
-            json?.candidates
-               ?.map((c: any) => c?.output ?? c?.content)
-               ?.join("\n") ||
-            json?.output?.[0]?.content ||
-            json?.outputs?.map((o: any) => o?.content)?.join("\n") ||
-            json?.generated_text ||
-            json?.data ||
-            null;
+            // Extract text from Gemini candidates
+            const extractFromCandidate = (c: any): string | null => {
+               if (!c) return null;
+               if (c.output && typeof c.output === "string") return c.output;
+               if (c.content?.parts?.length) {
+                  return c.content.parts
+                     .map((p: any) => p?.text)
+                     .filter(Boolean)
+                     .join("");
+               }
+               if (c.content?.text) return c.content.text;
+               if (typeof c.content === "string") return c.content;
+               return null;
+            };
 
-         if (possibleText) return NextResponse.json({ text: possibleText });
-         return NextResponse.json({ raw: json });
+            let extracted: string | null = null;
+            if (Array.isArray(json?.candidates)) {
+               const parts = json.candidates
+                  .map((c: any) => extractFromCandidate(c))
+                  .filter(Boolean);
+               if (parts.length) extracted = parts.join("\n\n");
+            }
+            if (!extracted && json?.generated_text) extracted = json.generated_text;
+            if (!extracted && json?.data) extracted = String(json.data);
+
+            if (extracted) return NextResponse.json({ text: extracted });
+            return NextResponse.json({ raw: json });
       }
 
       // Fallback: return plain text
