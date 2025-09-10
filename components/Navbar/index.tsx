@@ -40,10 +40,10 @@ export const Navbar = () => {
    ];
 
    return (
-   <HeroUINavbar
+      <HeroUINavbar
          isMenuOpen={isMenuOpen}
          onMenuOpenChange={setIsMenuOpen}
-      className='navbar-neon border-b border-white/10'
+         className='navbar-neon border-b border-white/10'
          maxWidth='full'
          isBordered
       >

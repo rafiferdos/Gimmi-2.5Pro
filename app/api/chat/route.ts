@@ -1,5 +1,5 @@
+import { ChatMessage, generate } from "@/lib/ai/service";
 import { NextResponse } from "next/server";
-import { generate, ChatMessage } from "@/lib/ai/service";
 
 interface ClientBody {
    prompt?: string;
@@ -17,10 +17,9 @@ export async function POST(req: Request) {
    }
 
    try {
-      const messages: ChatMessage[] = body.messages?.length
-         ? body.messages
-         : body.prompt
-         ? [{ role: "user", content: body.prompt }]
+      const messages: ChatMessage[] =
+         body.messages?.length ? body.messages
+         : body.prompt ? [{ role: "user", content: body.prompt }]
          : [{ role: "user", content: "Hello" }];
 
       const result = await generate(messages, {
