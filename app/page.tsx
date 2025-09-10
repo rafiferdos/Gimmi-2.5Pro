@@ -5,7 +5,6 @@ import { FeatureCards } from "@/components/home/FeatureCards";
 import { HeroSection } from "@/components/home/HeroSection";
 import { QuickActions } from "@/components/home/QuickActions";
 import { SearchInput } from "@/components/home/SearchInput";
-import { Navbar } from "@/components/Navbar";
 
 export default function Home() {
    return (
@@ -18,9 +17,6 @@ export default function Home() {
 
          {/* Content */}
          <div className='relative z-10'>
-            {/* Navbar */}
-            <Navbar />
-
             {/* Main Content */}
             <div className='flex flex-col items-center justify-center min-h-[calc(100vh-64px)] p-6'>
                <div className='max-w-4xl mx-auto text-center space-y-8'>
