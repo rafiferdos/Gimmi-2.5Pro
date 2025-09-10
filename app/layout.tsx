@@ -1,5 +1,4 @@
 import "@/styles/globals.css";
-import { Link } from "@heroui/link";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 
@@ -44,23 +43,9 @@ export default function RootLayout({
             <Providers
                themeProps={{ attribute: "class", defaultTheme: "dark" }}
             >
-               <div className='relative flex flex-col h-screen'>
+               <div className='relative flex flex-col min-h-screen'>
                   <Navbar />
-                  <main className='container mx-auto max-w-7xl pt-16 px-6 flex-grow'>
-                     {children}
-                  </main>
-                  <footer className='w-full flex items-center justify-center py-3'>
-                     <Link
-                        isExternal
-                        className='flex items-center gap-1 text-current'
-                        href={"https://github.com/rafiferdos"}
-                        title='Rafi Ferdos GitHub profile'
-                        target='_blank'
-                     >
-                        <span className='text-default-600'>Created by</span>
-                        <span className='text-primary'>Rafi Ferdos</span>
-                     </Link>
-                  </footer>
+                  <main className='flex-grow'>{children}</main>
                </div>
             </Providers>
          </body>
