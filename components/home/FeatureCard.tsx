@@ -9,7 +9,7 @@ interface FeatureCardProps {
 export const FeatureCard = ({ icon, title, description }: FeatureCardProps) => {
    return (
       <Card
-         className='frosted hover:scale-105 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/20'
+         className='feature-card-neon hover:scale-[1.04] transition-all duration-300'
          isPressable
       >
          <CardBody className='text-center p-6'>

@@ -10,12 +10,12 @@ export const QuickActions = () => {
    ];
 
    return (
-      <div className='flex flex-wrap justify-center gap-3 mt-6'>
+   <div className='flex flex-wrap justify-center gap-3 mt-6'>
          {actions.map((action, index) => (
             <Chip
                key={index}
-               variant='flat'
-               className='frosted hover:bg-primary/20 cursor-pointer transition-all duration-200 hover:scale-105'
+         variant='faded'
+         className='quick-chip-neon cursor-pointer transition-all duration-200 hover:scale-110'
                onClick={() => {
                   /* Handle quick action */
                }}
