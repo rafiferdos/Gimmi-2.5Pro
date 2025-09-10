@@ -19,25 +19,25 @@ export const AnimatedBackground = () => {
 
    useEffect(() => {
       const colors = [
-         "rgba(255, 99, 132, 0.4)", // Pink
-         "rgba(54, 162, 235, 0.4)", // Blue  
-         "rgba(255, 206, 86, 0.4)", // Yellow
-         "rgba(75, 192, 192, 0.4)", // Teal
-         "rgba(153, 102, 255, 0.4)", // Purple
-         "rgba(255, 159, 64, 0.4)", // Orange
-         "rgba(199, 199, 199, 0.3)", // Gray
-         "rgba(83, 102, 255, 0.4)", // Indigo
+         "rgba(255, 99, 132, 0.8)", // Pink - much more visible
+         "rgba(54, 162, 235, 0.8)", // Blue - much more visible 
+         "rgba(255, 206, 86, 0.8)", // Yellow - much more visible
+         "rgba(75, 192, 192, 0.8)", // Teal - much more visible
+         "rgba(153, 102, 255, 0.8)", // Purple - much more visible
+         "rgba(255, 159, 64, 0.8)", // Orange - much more visible
+         "rgba(46, 204, 113, 0.8)", // Green - much more visible
+         "rgba(231, 76, 60, 0.8)", // Red - much more visible
       ];
 
       const initialBalls = Array.from({ length: 15 }, (_, i) => ({
          id: i,
          x: Math.random() * window.innerWidth,
          y: Math.random() * window.innerHeight,
-         size: Math.random() * 250 + 80,
+         size: Math.random() * 350 + 120, // Much larger balls
          color: colors[Math.floor(Math.random() * colors.length)],
          speedX: (Math.random() - 0.5) * 0.3,
          speedY: (Math.random() - 0.5) * 0.3,
-         opacity: Math.random() * 0.4 + 0.2,
+         opacity: Math.random() * 0.4 + 0.6, // Much higher opacity (0.6-1.0)
       }));
 
       setBalls(initialBalls);
