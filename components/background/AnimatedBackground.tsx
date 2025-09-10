@@ -34,7 +34,7 @@ export const AnimatedBackground = () => {
          x: Math.random() * window.innerWidth,
          y: Math.random() * window.innerHeight,
          size: Math.random() * 350 + 120, // Much larger balls
-         color: colors[Math.floor(Math.random() * colors.length)],
+         color: colors[i % colors.length], // Static color assignment based on ball ID
          speedX: (Math.random() - 0.5) * 0.3,
          speedY: (Math.random() - 0.5) * 0.3,
          opacity: Math.random() * 0.4 + 0.6, // Much higher opacity (0.6-1.0)
