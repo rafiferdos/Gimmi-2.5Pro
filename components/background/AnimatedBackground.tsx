@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { AnimatedBall } from "./AnimatedBall";
 
 interface Ball {
@@ -15,77 +15,107 @@ interface Ball {
 }
 
 export const AnimatedBackground = () => {
-   const [balls, setBalls] = useState<Ball[]>([]);
+   const containerRef = useRef<HTMLDivElement | null>(null);
+   const ballRefs = useRef<Map<number, HTMLDivElement>>(new Map());
+   const ballsRef = useRef<Ball[]>([]);
 
    useEffect(() => {
       const colors = [
-         "rgba(255, 99, 132, 0.8)", // Pink - much more visible
-         "rgba(54, 162, 235, 0.8)", // Blue - much more visible
-         "rgba(255, 206, 86, 0.8)", // Yellow - much more visible
-         "rgba(75, 192, 192, 0.8)", // Teal - much more visible
-         "rgba(153, 102, 255, 0.8)", // Purple - much more visible
-         "rgba(255, 159, 64, 0.8)", // Orange - much more visible
-         "rgba(46, 204, 113, 0.8)", // Green - much more visible
-         "rgba(231, 76, 60, 0.8)", // Red - much more visible
+         "rgba(255, 99, 132, 0.9)",
+         "rgba(54, 162, 235, 0.9)",
+         "rgba(255, 206, 86, 0.9)",
+         "rgba(75, 192, 192, 0.9)",
+         "rgba(153, 102, 255, 0.9)",
+         "rgba(255, 159, 64, 0.9)",
+         "rgba(46, 204, 113, 0.9)",
+         "rgba(231, 76, 60, 0.9)",
       ];
 
-      const initialBalls = Array.from({ length: 15 }, (_, i) => ({
-         id: i,
-         x: Math.random() * window.innerWidth,
-         y: Math.random() * window.innerHeight,
-         size: Math.random() * 350 + 120, // Much larger balls
-         color: colors[i % colors.length], // Static color assignment based on ball ID
-         speedX: (Math.random() - 0.5) * 0.3,
-         speedY: (Math.random() - 0.5) * 0.3,
-         opacity: Math.random() * 0.4 + 0.6, // Much higher opacity (0.6-1.0)
-      }));
+      // Reduce ball count to 9 and make some balls significantly larger
+      const count = 9;
+      const initial: Ball[] = Array.from({ length: count }, (_, i) => {
+         const baseSize =
+            i % 3 === 0 ? 520
+            : i % 4 === 0 ? 380
+            : 220 + Math.random() * 180;
+         return {
+            id: i,
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            size: baseSize,
+            color: colors[i % colors.length],
+            speedX: (Math.random() - 0.5) * 0.25,
+            speedY: (Math.random() - 0.5) * 0.25,
+            opacity: Math.random() * 0.25 + 0.75,
+         };
+      });
 
-      setBalls(initialBalls);
+      ballsRef.current = initial;
 
-      let animationFrame: number;
+      let rafId = 0;
 
-      const animateBalls = () => {
-         setBalls((prevBalls) =>
-            prevBalls.map((ball) => {
-               let newX = ball.x + ball.speedX;
-               let newY = ball.y + ball.speedY;
-               let newSpeedX = ball.speedX;
-               let newSpeedY = ball.speedY;
+      const animate = () => {
+         const w = window.innerWidth;
+         const h = window.innerHeight;
 
-               if (newX <= -ball.size * 0.5) {
-                  newX = window.innerWidth + ball.size * 0.5;
-               } else if (newX >= window.innerWidth + ball.size * 0.5) {
-                  newX = -ball.size * 0.5;
-               }
+         for (const b of ballsRef.current) {
+            b.x += b.speedX;
+            b.y += b.speedY;
 
-               if (newY <= -ball.size * 0.5) {
-                  newY = window.innerHeight + ball.size * 0.5;
-               } else if (newY >= window.innerHeight + ball.size * 0.5) {
-                  newY = -ball.size * 0.5;
-               }
+            if (b.x <= -b.size * 0.5) b.x = w + b.size * 0.5;
+            else if (b.x >= w + b.size * 0.5) b.x = -b.size * 0.5;
 
-               return {
-                  ...ball,
-                  x: newX,
-                  y: newY,
-                  speedX: newSpeedX,
-                  speedY: newSpeedY,
-               };
-            })
-         );
+            if (b.y <= -b.size * 0.5) b.y = h + b.size * 0.5;
+            else if (b.y >= h + b.size * 0.5) b.y = -b.size * 0.5;
 
-         animationFrame = requestAnimationFrame(animateBalls);
+            const el = ballRefs.current.get(b.id);
+            if (el) {
+               el.style.transform = `translate3d(${Math.round(b.x)}px, ${Math.round(b.y)}px, 0)`;
+            }
+         }
+
+         rafId = requestAnimationFrame(animate);
       };
 
-      animationFrame = requestAnimationFrame(animateBalls);
-      return () => cancelAnimationFrame(animationFrame);
+      rafId = requestAnimationFrame(animate);
+
+      const handleResize = () => {
+         // nothing special needed; wrap logic uses window size each frame
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+         cancelAnimationFrame(rafId);
+         window.removeEventListener("resize", handleResize);
+      };
    }, []);
 
    return (
-      <div className='fixed inset-0 overflow-hidden pointer-events-none'>
-         {balls.map((ball) => (
-            <AnimatedBall key={ball.id} ball={ball} />
-         ))}
+      <div
+         ref={containerRef}
+         className='fixed inset-0 overflow-hidden pointer-events-none'
+      >
+         {Array.from({ length: 9 }).map((_, i) => {
+            const b = ballsRef.current[i] || {
+               id: i,
+               x: 0,
+               y: 0,
+               size: 200,
+               color: "rgba(255,255,255,0.8)",
+               opacity: 0.9,
+            };
+            return (
+               <AnimatedBall
+                  key={i}
+                  ref={(el: HTMLDivElement | null) => {
+                     if (el) ballRefs.current.set(i, el);
+                     else ballRefs.current.delete(i);
+                  }}
+                  ball={b}
+               />
+            );
+         })}
       </div>
    );
 };
