@@ -53,17 +53,12 @@ export default function RootLayout({
                      <Link
                         isExternal
                         className='flex items-center gap-1 text-current'
-                        href='https://heroui.com?utm_source=next-app-template'
-                        title='heroui.com homepage'
+                        href={"https://github.com/rafiferdos"}
+                        title='Rafi Ferdos GitHub profile'
+                        target='_blank'
                      >
                         <span className='text-default-600'>Created by</span>
-                        <Link
-                           href={"https://github.com/rafiferdos"}
-                           className='text-primary'
-                           target='_blank'
-                        >
-                           Rafi Ferdos
-                        </Link>
+                        <span className='text-primary'>Rafi Ferdos</span>
                      </Link>
                   </footer>
                </div>
