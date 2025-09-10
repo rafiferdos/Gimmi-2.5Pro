@@ -21,18 +21,25 @@ export const Navbar = () => {
    return (
       <HeroUINavbar
          maxWidth='full'
-         className='bg-background/60 backdrop-blur-md'
+         className='bg-background/80 backdrop-blur-lg border-b border-primary/10 shadow-lg shadow-primary/5'
       >
          <NavbarBrand>
-            <p className='font-bold text-lg'>Gimmi</p>
+            <div className='flex items-center gap-2'>
+               <div className='w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-lg flex items-center justify-center shadow-lg'>
+                  <span className='text-white font-bold text-sm'>G</span>
+               </div>
+               <p className='font-bold text-xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent'>
+                  Gimmi
+               </p>
+            </div>
          </NavbarBrand>
 
          <NavbarContent justify='end'>
             <NavbarItem>
                {mounted && (
                   <Switch
-                     size='sm'
-                     color='primary'
+                     size='md'
+                     color='secondary'
                      thumbIcon={({ isSelected, className }) =>
                         isSelected ?
                            <div className={className}>🌙</div>
@@ -42,6 +49,9 @@ export const Navbar = () => {
                      onValueChange={(isSelected) =>
                         setTheme(isSelected ? "dark" : "light")
                      }
+                     classNames={{
+                        wrapper: "group-data-[selected=true]:bg-secondary"
+                     }}
                   />
                )}
             </NavbarItem>
