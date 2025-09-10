@@ -100,85 +100,98 @@ export function MinimalChat() {
    };
 
    return (
-      <div className='space-y-6'>
+      <div className='space-y-8'>
          {/* Header */}
-         <div className='text-center space-y-2'>
-            <h1 className='text-3xl font-bold text-foreground'>Gimmi</h1>
-            <p className='text-default-500 text-sm'>Your AI assistant</p>
+         <div className='text-center space-y-3'>
+            <h1 className='text-5xl font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent'>
+               Gimmi
+            </h1>
+            <p className='text-default-500 text-base font-medium'>Your intelligent AI companion</p>
          </div>
 
          {/* Quick Actions */}
          {messages.length === 0 && (
-            <div className='flex flex-wrap gap-2 justify-center'>
+            <div className='flex flex-wrap gap-3 justify-center'>
                {quickActions.map((action) => (
                   <Chip
                      key={action}
-                     variant='flat'
-                     size='sm'
-                     className='cursor-pointer hover:scale-105 transition-transform'
+                     variant='shadow'
+                     size='md'
+                     color='secondary'
+                     className='cursor-pointer hover:scale-110 transition-all duration-300 font-medium px-4 py-2'
                      onClick={() => setInput(action)}
                   >
-                     {action}
+                     ✨ {action}
                   </Chip>
                ))}
             </div>
          )}
 
          {/* Chat Container */}
-         <Card className='w-full'>
-            <CardHeader className='pb-3'>
+         <Card className='w-full shadow-2xl border border-primary/20'>
+            <CardHeader className='pb-4 bg-gradient-to-r from-primary/5 to-secondary/5 border-b border-primary/10'>
                <div className='flex justify-between items-center w-full'>
-                  <span className='text-sm text-default-500'>Conversation</span>
+                  <div className='flex items-center gap-2'>
+                     <div className='w-2 h-2 bg-green-500 rounded-full animate-pulse'></div>
+                     <span className='text-base font-semibold text-foreground'>Live Conversation</span>
+                  </div>
                   {messages.length > 0 && (
                      <Button
                         size='sm'
-                        variant='light'
+                        variant='flat'
+                        color='danger'
                         onPress={() => setMessages([])}
+                        className='font-medium'
                      >
-                        Clear
+                        🗑️ Clear
                      </Button>
                   )}
                </div>
             </CardHeader>
-            <Divider />
+            <Divider className='bg-gradient-to-r from-transparent via-primary/30 to-transparent' />
             <CardBody className='p-0'>
-               <div className='flex flex-col h-96'>
+               <div className='flex flex-col h-[600px]'>
                   {/* Messages */}
-                  <ScrollShadow className='flex-1 p-4'>
-                     <div ref={scrollRef} className='space-y-4'>
-                        {messages.length === 0 ?
-                           <div className='text-center text-default-400 py-12'>
-                              <p>Start a conversation...</p>
+                  <ScrollShadow className='flex-1 p-6 custom-scroll'>
+                     <div ref={scrollRef} className='space-y-6'>
+                        {messages.length === 0 ? (
+                           <div className='text-center text-default-400 py-20'>
+                              <div className='text-6xl mb-4'>💭</div>
+                              <p className='text-lg font-medium'>Ready to chat? Start the conversation...</p>
                            </div>
-                        :  messages.map((message) => (
+                        ) : (
+                           messages.map((message) => (
                               <div
                                  key={message.id}
                                  className={`flex ${
-                                    message.role === "user" ?
-                                       "justify-end"
-                                    :  "justify-start"
-                                 }`}
+                                    message.role === "user" ? "justify-end" : "justify-start"
+                                 } animate-in slide-in-from-bottom-2 duration-300`}
                               >
                                  <div
-                                    className={`max-w-[80%] p-3 rounded-lg ${
-                                       message.role === "user" ?
-                                          "bg-primary text-primary-foreground"
-                                       :  "bg-default-100 text-foreground"
+                                    className={`max-w-[85%] p-4 rounded-2xl shadow-lg font-medium text-base leading-relaxed ${
+                                       message.role === "user"
+                                          ? "bg-gradient-to-r from-primary to-primary/80 text-primary-foreground border border-primary/20"
+                                          : "bg-gradient-to-r from-default-100 to-default-50 text-foreground border border-default-200"
                                     }`}
                                  >
-                                    <p className='text-sm leading-relaxed whitespace-pre-wrap'>
-                                       {message.content}
-                                    </p>
+                                    <div className='flex items-start gap-2'>
+                                       <span className='text-lg'>
+                                          {message.role === "user" ? "🧑‍💻" : "🤖"}
+                                       </span>
+                                       <p className='whitespace-pre-wrap flex-1'>
+                                          {message.content}
+                                       </p>
+                                    </div>
                                  </div>
                               </div>
                            ))
-                        }
+                        )}
                         {isLoading && (
-                           <div className='flex justify-start'>
-                              <div className='bg-default-100 p-3 rounded-lg flex items-center gap-2'>
-                                 <Spinner size='sm' />
-                                 <span className='text-sm text-default-500'>
-                                    Thinking...
+                           <div className='flex justify-start animate-in slide-in-from-left-2 duration-300'>
+                              <div className='bg-gradient-to-r from-secondary/20 to-primary/20 border border-secondary/30 p-4 rounded-2xl flex items-center gap-3 shadow-lg'>
+                                 <Spinner size='md' color='secondary' />
+                                 <span className='text-base font-medium text-secondary'>
+                                    🧠 Thinking deeply...
                                  </span>
                               </div>
                            </div>
@@ -187,24 +200,33 @@ export function MinimalChat() {
                   </ScrollShadow>
 
                   {/* Input */}
-                  <div className='p-4 border-t border-default-200'>
-                     <div className='flex gap-2'>
+                  <div className='p-6 border-t border-default-200 bg-gradient-to-r from-background to-default-50/30'>
+                     <div className='flex gap-3'>
                         <Input
                            value={input}
                            onValueChange={setInput}
                            onKeyDown={handleKeyPress}
-                           placeholder='Type your message...'
-                           variant='flat'
-                           className='flex-1'
+                           placeholder='✍️ Type your message here...'
+                           variant='bordered'
+                           size='lg'
+                           className='flex-1 font-medium'
+                           classNames={{
+                              input: "text-base",
+                              inputWrapper: "border-primary/30 hover:border-primary/60 focus-within:border-primary group-data-[focus=true]:border-primary shadow-lg"
+                           }}
                            isDisabled={isLoading}
+                           startContent={<span className='text-primary/60'>💬</span>}
                         />
                         <Button
                            color='primary'
+                           size='lg'
+                           variant='shadow'
                            onPress={handleSend}
                            isDisabled={!input.trim() || isLoading}
                            isLoading={isLoading}
+                           className='px-8 font-semibold text-base'
                         >
-                           Send
+                           {isLoading ? "⏳" : "🚀"} Send
                         </Button>
                      </div>
                   </div>
