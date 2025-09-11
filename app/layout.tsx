@@ -4,7 +4,7 @@ import { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { Navbar } from "../components/navbar";
+import { TopNavbar } from "../components/navbar";
 
 export const metadata: Metadata = {
    title: {
@@ -42,7 +42,7 @@ export default function RootLayout({
                themeProps={{ attribute: "class", defaultTheme: "dark" }}
             >
                <div className='relative flex flex-col min-h-screen'>
-                  <Navbar />
+                  <TopNavbar />
                   <main className='flex-grow'>{children}</main>
                </div>
             </Providers>
