@@ -26,7 +26,8 @@
 
 /* Subtle neon animations */
 @keyframes glow-pulse {
-   0%, 100% {
+   0%,
+   100% {
       box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
    }
    50% {
@@ -71,7 +72,11 @@
 
 /* Gradient text effect */
 .gradient-text-primary {
-   background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+   background: linear-gradient(
+      135deg,
+      hsl(var(--primary)),
+      hsl(var(--secondary))
+   );
    -webkit-background-clip: text;
    background-clip: text;
    -webkit-text-fill-color: transparent;
@@ -92,7 +97,9 @@
    background: hsl(var(--default-200)) !important;
    padding: 0.25rem 0.5rem !important;
    border-radius: 0.375rem !important;
-   font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+   font-family:
+      ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace !important;
    font-size: 0.875rem !important;
 }
 
@@ -104,8 +111,14 @@
 
 /* Typing cursor animation */
 @keyframes typing-cursor {
-   0%, 50% { opacity: 1; }
-   51%, 100% { opacity: 0; }
+   0%,
+   50% {
+      opacity: 1;
+   }
+   51%,
+   100% {
+      opacity: 0;
+   }
 }
 
 .typing-cursor {

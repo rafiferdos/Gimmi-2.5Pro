@@ -50,7 +50,7 @@ export const Navbar = () => {
                         setTheme(isSelected ? "dark" : "light")
                      }
                      classNames={{
-                        wrapper: "group-data-[selected=true]:bg-secondary"
+                        wrapper: "group-data-[selected=true]:bg-secondary",
                      }}
                   />
                )}
