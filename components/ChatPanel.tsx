@@ -88,22 +88,21 @@ export default function ChatPanel() {
 
    return (
       <Card className='neon-panel mt-12 border-none shadow-none'>
-         <CardBody className='p-0'>
+         <CardContent className='p-0'>
             <div className='flex flex-col h-[480px]'>
                <div className='px-5 pt-4 pb-2 flex flex-wrap gap-2'>
                   {quickPrompts.map((p) => (
-                     <Chip
+                     <Badge
                         key={p}
-                        size='sm'
-                        variant='flat'
-                        className='cursor-pointer chip-neon'
+                        variant="secondary"
+                        className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
                         onClick={() => setInput(p)}
                      >
                         {p}
-                     </Chip>
+                     </Badge>
                   ))}
                </div>
-               <ScrollShadow size={40} hideScrollBar className='flex-1 px-5'>
+               <ScrollArea className='flex-1 px-5'>
                   <div ref={listRef} className='space-y-4 py-2 overflow-y-auto h-full pr-1 custom-scroll'>
                      {messages.length === 0 && (
                         <div className='text-center mt-12 opacity-60 text-sm tracking-wide animate-fade-in'>
@@ -119,7 +118,7 @@ export default function ChatPanel() {
                         </div>
                      )}
                   </div>
-               </ScrollShadow>
+               </ScrollArea>
                <div className='p-4 border-t border-white/5 neon-divider'>
                   <form
                      onSubmit={(e) => {
@@ -130,7 +129,6 @@ export default function ChatPanel() {
                   >
                      <Input
                         aria-label='Chat input'
-                        variant='flat'
                         className='flex-1 neon-input'
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
@@ -143,19 +141,17 @@ export default function ChatPanel() {
                         }}
                      />
                      <Button
-                        isDisabled={loading || !input.trim()}
-                        color='primary'
-                        variant='faded'
-                        radius='sm'
+                        disabled={loading || !input.trim()}
+                        variant='secondary'
                         className='send-btn-neon'
-                        onPress={send}
+                        onClick={send}
                      >
                         {loading ? "..." : "Send"}
                      </Button>
                   </form>
                </div>
             </div>
-         </CardBody>
+         </CardContent>
       </Card>
    );
 }

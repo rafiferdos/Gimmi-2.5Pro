@@ -342,4 +342,5 @@ export function MinimalChat() {
          </Card>
       </div>
    );
+}
 
