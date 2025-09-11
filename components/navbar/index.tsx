@@ -2,8 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { MoonFilledIcon, SunFilledIcon } from "../icons";
 import { Button } from "../ui/button";
-import { SunFilledIcon, MoonFilledIcon } from "../icons";
 
 export const Navbar = () => {
    const { theme, setTheme } = useTheme();
@@ -33,17 +33,15 @@ export const Navbar = () => {
                <div className='flex items-center'>
                   {mounted && (
                      <Button
-                        variant="ghost"
-                        size="sm"
+                        variant='ghost'
+                        size='sm'
                         onClick={toggleTheme}
                         className='p-2 transition-opacity hover:opacity-80 cursor-pointer'
                         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
                      >
-                        {theme === "light" ? (
+                        {theme === "light" ?
                            <SunFilledIcon size={22} />
-                        ) : (
-                           <MoonFilledIcon size={22} />
-                        )}
+                        :  <MoonFilledIcon size={22} />}
                      </Button>
                   )}
                </div>
