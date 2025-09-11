@@ -13,8 +13,7 @@ const config = {
       },
    },
    darkMode: "class",
-   plugins: [
-      heroui({
+   plugins: [require("tailwindcss-animate")]
          themes: {
             themes: {
                light: {
