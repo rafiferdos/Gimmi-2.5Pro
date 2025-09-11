@@ -1,12 +1,12 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
-import { Badge } from "@/components/ui/badge";
+import { useCallback, useRef, useState } from "react";
 
 interface ChatMessage {
    role: "user" | "assistant" | "system";
@@ -55,7 +55,8 @@ export default function ChatPanel() {
             const fallbackText = await res.text();
             data = { text: fallbackText };
          }
-         const text: string = data?.text || data?.output || JSON.stringify(data);
+         const text: string =
+            data?.text || data?.output || JSON.stringify(data);
          setMessages((m) => [
             ...m,
             {
@@ -94,7 +95,7 @@ export default function ChatPanel() {
                   {quickPrompts.map((p) => (
                      <Badge
                         key={p}
-                        variant="secondary"
+                        variant='secondary'
                         className='cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors'
                         onClick={() => setInput(p)}
                      >
@@ -103,7 +104,10 @@ export default function ChatPanel() {
                   ))}
                </div>
                <ScrollArea className='flex-1 px-5'>
-                  <div ref={listRef} className='space-y-4 py-2 overflow-y-auto h-full pr-1 custom-scroll'>
+                  <div
+                     ref={listRef}
+                     className='space-y-4 py-2 overflow-y-auto h-full pr-1 custom-scroll'
+                  >
                      {messages.length === 0 && (
                         <div className='text-center mt-12 opacity-60 text-sm tracking-wide animate-fade-in'>
                            Start the conversation ✨
@@ -159,7 +163,9 @@ export default function ChatPanel() {
 function MessageBubble({ message }: { message: ChatMessage }) {
    const isUser = message.role === "user";
    return (
-      <div className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}>
+      <div
+         className={`flex w-full ${isUser ? "justify-end" : "justify-start"}`}
+      >
          <div
             className={`message-bubble ${isUser ? "bubble-user" : "bubble-assistant"} animate-message-in`}
          >

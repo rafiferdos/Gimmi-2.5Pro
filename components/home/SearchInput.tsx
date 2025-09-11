@@ -12,9 +12,7 @@ export const SearchInput = () => {
          <div className='mb-6'>
             <h2 className='text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent'>
                Hello, Gimmi{" "}
-               <span className='animate-bounce inline-block'>
-                  👋
-               </span>
+               <span className='animate-bounce inline-block'>👋</span>
             </h2>
             <p className='mt-2 text-base md:text-lg text-gray-600 dark:text-gray-400'>
                Ask anything — I'll help you draft, summarize, or brainstorm.
@@ -50,19 +48,11 @@ export const SearchInput = () => {
                className='flex-1'
                placeholder='Ask me anything...'
             />
-            <Button
-               type='submit'
-               variant='default'
-               className='px-6'
-            >
+            <Button type='submit' variant='default' className='px-6'>
                Go
             </Button>
             {value && (
-               <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => setValue("")}
-               >
+               <Button variant='outline' size='sm' onClick={() => setValue("")}>
                   Clear
                </Button>
             )}
