@@ -13,8 +13,10 @@ const config = {
       },
    },
    darkMode: "class",
-   plugins: [require("tailwindcss-animate")]
-         themes: {
+   plugins: [require("tailwindcss-animate")],
+};
+
+export default config;
             themes: {
                light: {
                   colors: {
