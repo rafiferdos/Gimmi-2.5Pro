@@ -9,44 +9,43 @@ export const Navbar = () => {
    const { theme, setTheme } = useTheme();
    const [mounted, setMounted] = useState(false);
 
-   useEffect(() => {
-      setMounted(true);
-   }, []);
+   useEffect(() => setMounted(true), []);
 
-   const toggleTheme = () => {
-      setTheme(theme === "light" ? "dark" : "light");
-   };
+   const toggleTheme = () => setTheme(theme === "light" ? "dark" : "light");
 
    return (
-      <nav className='bg-background/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-800 shadow-lg'>
-         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-            <div className='flex justify-between items-center h-16'>
-               <div className='flex items-center gap-2'>
-                  <div className='w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow-lg'>
-                     <span className='text-white font-bold text-sm'>G</span>
+      <div className="fixed left-1/2 top-4 z-50 w-full max-w-3xl -translate-x-1/2 px-4">
+         <div className="rounded-xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md border border-gray-200/40 dark:border-gray-700/40 shadow-lg">
+            <div className="flex items-center justify-between gap-4 px-3 py-2">
+               <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center shadow">
+                     <span className="text-white font-bold text-sm">G</span>
                   </div>
-                  <p className='font-bold text-xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent'>
-                     Gimmi
-                  </p>
+                  <div className="hidden sm:block">
+                     <p className="font-semibold text-sm bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Gimmi</p>
+                  </div>
                </div>
 
-               <div className='flex items-center'>
+               <nav className="flex items-center gap-2">
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Home</Button>
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Features</Button>
+                  <Button variant="ghost" size="sm" className="hidden sm:inline-flex">Pricing</Button>
+               </nav>
+
+               <div className="flex items-center gap-2">
                   {mounted && (
                      <Button
-                        variant='ghost'
-                        size='sm'
+                        variant="ghost"
+                        size="sm"
                         onClick={toggleTheme}
-                        className='p-2 transition-opacity hover:opacity-80 cursor-pointer'
                         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
                      >
-                        {theme === "light" ?
-                           <SunFilledIcon size={22} />
-                        :  <MoonFilledIcon size={22} />}
+                        {theme === "light" ? <SunFilledIcon size={18} /> : <MoonFilledIcon size={18} />}
                      </Button>
                   )}
                </div>
             </div>
          </div>
-      </nav>
+      </div>
    );
 };
