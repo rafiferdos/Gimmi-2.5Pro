@@ -1,10 +1,10 @@
+import { fontSans } from "@/config/fonts";
+import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
+import TopNavbar from "../components/navbar/index";
 import { Providers } from "./providers";
-import { fontSans } from "@/config/fonts";
-import { siteConfig } from "@/config/site";
-import { TopNavbar } from "../components/navbar";
 
 export const metadata: Metadata = {
    title: {

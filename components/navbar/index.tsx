@@ -15,6 +15,10 @@ import { useState } from "react";
 export default function TopNavbar() {
    const navItems = [
       {
+         name: "Home",
+         link: "#home",
+      },
+      {
          name: "Features",
          link: "#features",
       },
