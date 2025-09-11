@@ -1,22 +1,22 @@
 "use client";
 
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export const SearchInput = () => {
    const [value, setValue] = useState("");
 
    return (
-      <div className='max-w-3xl mx-auto mt-4 neon-section'>
+      <div className='max-w-3xl mx-auto mt-4 p-6 rounded-lg bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm'>
          <div className='mb-6'>
-            <h2 className='text-4xl font-extrabold tracking-tight neon-text-gradient'>
+            <h2 className='text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 bg-clip-text text-transparent'>
                Hello, Gimmi{" "}
-               <span className='animate-wave inline-block origin-bottom'>
+               <span className='animate-bounce inline-block'>
                   👋
                </span>
             </h2>
-            <p className='mt-2 text-base md:text-lg text-foreground/70'>
+            <p className='mt-2 text-base md:text-lg text-gray-600 dark:text-gray-400'>
                Ask anything — I'll help you draft, summarize, or brainstorm.
             </p>
          </div>
@@ -29,9 +29,9 @@ export const SearchInput = () => {
                <Button
                   key={t}
                   size='sm'
-                  variant='faded'
-                  className='prompt-chip-neon'
-                  onPress={() => setValue(t)}
+                  variant='secondary'
+                  className='hover:scale-105 transition-all'
+                  onClick={() => setValue(t)}
                >
                   {t}
                </Button>
@@ -47,26 +47,21 @@ export const SearchInput = () => {
                aria-label='Ask me anything'
                value={value}
                onChange={(e) => setValue(e.target.value)}
-               variant='flat'
-               className='flex-1 neon-input'
+               className='flex-1'
                placeholder='Ask me anything...'
             />
             <Button
                type='submit'
-               variant='faded'
-               color='primary'
-               radius='sm'
-               className='send-btn-neon'
+               variant='default'
+               className='px-6'
             >
                Go
             </Button>
             {value && (
                <Button
-                  variant='faded'
+                  variant='outline'
                   size='sm'
-                  radius='sm'
-                  className='clear-btn-neon'
-                  onPress={() => setValue("")}
+                  onClick={() => setValue("")}
                >
                   Clear
                </Button>

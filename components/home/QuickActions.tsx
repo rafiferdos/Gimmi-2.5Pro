@@ -1,4 +1,4 @@
-import { Chip } from "@heroui/chip";
+import { Badge } from "@/components/ui/badge";
 
 export const QuickActions = () => {
    const actions = [
@@ -12,16 +12,16 @@ export const QuickActions = () => {
    return (
       <div className='flex flex-wrap justify-center gap-3 mt-6'>
          {actions.map((action, index) => (
-            <Chip
+            <Badge
                key={index}
-               variant='faded'
-               className='quick-chip-neon cursor-pointer transition-all duration-200 hover:scale-110'
+               variant='secondary'
+               className='cursor-pointer transition-all duration-200 hover:scale-110 hover:bg-blue-100 dark:hover:bg-blue-900 px-3 py-2'
                onClick={() => {
                   /* Handle quick action */
                }}
             >
                {action}
-            </Chip>
+            </Badge>
          ))}
       </div>
    );
