@@ -51,11 +51,14 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-gray-900;
+  }
+  .dark body {
+    @apply bg-gray-900 text-white;
   }
 }
 
