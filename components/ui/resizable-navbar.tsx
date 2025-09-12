@@ -1,8 +1,8 @@
 'use client';
 import { IconMenu2, IconX } from '@tabler/icons-react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'motion/react';
-import Link from 'next/link';
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'motion/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import React, { useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
