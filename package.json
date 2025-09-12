@@ -2,6 +2,12 @@
   "name": "next-app-template",
   "version": "0.0.1",
   "private": true,
+  "prettier": {
+    "endOfLine": "lf",
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "printWidth": 100
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",

@@ -96,6 +96,12 @@ export default defineConfig([
       react: {
         version: 'detect',
       },
+      prettier: {
+        singleQuote: true,
+        endOfLine: 'lf',
+        trailingComma: 'es5',
+        printWidth: 100,
+      },
     },
 
     files: ['**/*.ts', '**/*.tsx'],
