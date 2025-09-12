@@ -1,5 +1,16 @@
 import { defineConfig, globalIgnores } from "eslint/config";
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
+let fixupConfigRules;
+let fixupPluginRules;
+try {
+    const compatPkg = await import("@eslint/compat");
+    fixupConfigRules = compatPkg.fixupConfigRules;
+    fixupPluginRules = compatPkg.fixupPluginRules;
+} catch (e) {
+    // fall back to a lightweight shim to avoid build-time failures
+    const shim = await import("./eslint-compat-shim.mjs");
+    fixupConfigRules = shim.fixupConfigRules;
+    fixupPluginRules = shim.fixupPluginRules;
+}
 import react from "eslint-plugin-react";
 import unusedImports from "eslint-plugin-unused-imports";
 import _import from "eslint-plugin-import";
